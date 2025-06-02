@@ -30,7 +30,10 @@ class RestaurantResource(Resource):
             return restaurant.to_dict(), 200
 
         restaurants = Restaurant.query.all()
-        return [restaurant.to_dict() for restaurant in restaurants], 200
+        return [
+            restaurant.to_dict(only=("id", "name", "address"))
+            for restaurant in restaurants
+        ], 200
 
 
     
@@ -46,10 +49,12 @@ class RestaurantResource(Resource):
 
 
 class PizzaList(Resource):
-    def get(self):
+     def get(self):
         pizzas = Pizza.query.all()
-        return [pizza.to_dict() for pizza in pizzas], 200
-
+        return [
+            pizza.to_dict(only=("id", "name", "ingredients"))
+            for pizza in pizzas
+        ], 200
 class RestaurantPizzaList(Resource):
     def post(self):
         data = request.get_json()
